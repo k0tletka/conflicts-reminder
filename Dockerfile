@@ -43,4 +43,4 @@ WORKDIR /usr/bin/reminder
 COPY --from=build /go/src/app/build /usr/bin/reminder/
 COPY --from=build /go/src/app/config /usr/bin/reminder/
 
-ENTRYPOINT /usr/bin/reminder/reminder
+CMD [ "/usr/bin/reminder/reminder" ]

@@ -2,7 +2,9 @@
 
 package main
 
-import "github.com/magefile/mage/sh"
+import (
+	"github.com/magefile/mage/sh"
+)
 
 const (
 	cmdLocation      = "cmd/reminder.go"
@@ -18,6 +20,6 @@ var (
 func Build() error {
 	return sh.RunWithV(
 		buildEnv,
-		"go", "build", "--ldflags=\"-s -w\"", "-o", artifactLocation, cmdLocation,
+		"go", "build", "-o", artifactLocation, cmdLocation,
 	)
 }
