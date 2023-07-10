@@ -3,6 +3,7 @@
 package main
 
 import (
+	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
 )
 
@@ -18,8 +19,14 @@ var (
 )
 
 func Build() error {
+	mg.Deps(Tidy)
+
 	return sh.RunWithV(
 		buildEnv,
 		"go", "build", "-o", artifactLocation, cmdLocation,
 	)
+}
+
+func Tidy() error {
+	return sh.RunV("go", "mod", "tidy")
 }
