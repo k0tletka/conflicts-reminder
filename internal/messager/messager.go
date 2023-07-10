@@ -33,7 +33,7 @@ type SlackConflictData struct {
 
 type SlackMessageSender struct {
 	cfg *config.Config
-	api SlackClient
+	api *slack.Client
 }
 
 func NewSlackMessageSender(cfg *config.Config) *SlackMessageSender {
