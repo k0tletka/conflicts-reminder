@@ -10,11 +10,12 @@ const (
 )
 
 type Config struct {
-	RemindCycleMinutes int         `mapstructure:"remind_cycle_minutes"`
-	Slack              SlackConfig `mapstructure:"slack"`
-	Binds              []UserBind  `mapstructure:"user_bind"`
+	RemindCycleMinutes int          `mapstructure:"remind_cycle_minutes"`
+	Slack              SlackConfig  `mapstructure:"slack"`
+	Binds              []UserBind   `mapstructure:"user_bind"`
+	Gitlab             GitlabConfig `mapstructure:"gitlab"`
 
-	bindMapGitlabToSlack map[string]string
+	bindMapGitlabToSlack map[int]string
 }
 
 func (c *Config) fillMaps() {
@@ -23,19 +24,30 @@ func (c *Config) fillMaps() {
 	}
 }
 
-func (c *Config) GetSlackIDByGitlabID(gitlabId string) string {
+func (c *Config) GetSlackIDByGitlabID(gitlabId int) string {
 	slackId, _ := c.bindMapGitlabToSlack[gitlabId]
 	return slackId
 }
 
+func (c *Config) CheckGitlabId(gitlabId int) bool {
+	_, ok := c.bindMapGitlabToSlack[gitlabId]
+	return ok
+}
+
 type SlackConfig struct {
 	Token                 string `mapstructure:"token"`
-	NotificationChannelID string `json:"notify_channel_id"`
+	NotificationChannelID string `mapstructure:"notify_channel_id"`
+}
+
+type GitlabConfig struct {
+	Token         string `mapstructure:"token"`
+	GitlabAddress string `mapstructure:"gitlab_address"`
+	ProjectName   string `mapstructure:"project_name"`
 }
 
 type UserBind struct {
 	SlackID  string `json:"slack_id"`
-	GitlabID string `json:"gitlab_id"`
+	GitlabID int    `json:"gitlab_id"`
 }
 
 func ReadConfig() *Config {

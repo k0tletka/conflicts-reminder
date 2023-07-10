@@ -25,16 +25,15 @@ type SlackConflictsData struct {
 }
 
 type SlackConflictData struct {
-	SlackNicknamePing string
+	SlackID           string
 	BranchName        string
 	MergeRequestLink  string
+	MergeRequestTitle string
 }
 
 type SlackMessageSender struct {
 	cfg *config.Config
-	api *slack.Client
-
-	userConfiguration map[string]*slack.User
+	api SlackClient
 }
 
 func NewSlackMessageSender(cfg *config.Config) *SlackMessageSender {
@@ -73,35 +72,4 @@ func (s *SlackMessageSender) SendMessageNoConflicts(ctx context.Context) error {
 	)
 
 	return err
-}
-
-func (s *SlackMessageSender) GetPingNameBySlackId(slackId string) string {
-	user, _ := s.userConfiguration[slackId]
-
-	if user != nil {
-		return user.Name
-	} else {
-		return ""
-	}
-}
-
-func (s *SlackMessageSender) extractUserConfiguration() error {
-	usersToCheck := make(map[string]struct{})
-
-	for _, bindCfg := range s.cfg.Binds {
-		usersToCheck[bindCfg.SlackID] = struct{}{}
-	}
-
-	allUsers, err := s.api.GetUsers()
-	if err != nil {
-		return err
-	}
-
-	for _, user := range allUsers {
-		if _, ok := usersToCheck[user.ID]; ok && !user.Deleted {
-			s.userConfiguration[user.ID] = &user
-		}
-	}
-
-	return nil
 }

@@ -23,7 +23,10 @@ func main() {
 	defer cancel()
 
 	cfg := config.ReadConfig()
-	slackService := reminder.NewReminderService(cfg)
+	slackService, err := reminder.NewReminderService(cfg)
+	if err != nil {
+		zap.S().With("err", err).Error("Reminder initialization failed")
+	}
 
 	if err := slackService.StartService(ctx); err != nil && err != context.Canceled {
 		zap.S().With("err", err).Error("Reminder exited with errors")
