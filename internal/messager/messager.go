@@ -57,11 +57,7 @@ func (s *SlackMessageSender) SendMessageWithConflictsData(ctx context.Context, m
 		slack.MsgOptionText(messageBuffer.String(), false),
 	)
 
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (s *SlackMessageSender) SendMessageNoConflicts(ctx context.Context) error {
