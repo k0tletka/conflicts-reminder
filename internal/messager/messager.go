@@ -47,7 +47,7 @@ func NewSlackMessageSender(cfg *config.Config) *SlackMessageSender {
 
 func (s *SlackMessageSender) SendMessageWithConflictsData(ctx context.Context, messageData *SlackConflictsData) error {
 	messageBuffer := &bytes.Buffer{}
-	if err := conflictsMessageTemplate.ExecuteTemplate(messageBuffer, "", messageData); err != nil {
+	if err := conflictsMessageTemplate.ExecuteTemplate(messageBuffer, "conflicts_template", messageData); err != nil {
 		return err
 	}
 
