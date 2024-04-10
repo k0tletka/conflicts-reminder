@@ -1,0 +1,14 @@
+remind_cycle_minutes = 1440
+
+[slack]
+token = "test"
+notify_channel_id = "channel_id"
+
+[gitlab]
+token = "gitlab_token"
+gitlab_address = "https://gitlab.example.com"
+project_name = "example/example_project"
+
+[[user_bind]]
+slack_id = "U053DSY5XMX"
+gitlab_id = 328
